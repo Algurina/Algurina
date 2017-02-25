@@ -1,4 +1,4 @@
-#include <iostream>
+include <iostream>
 using namespace std;
 
 int main()
@@ -18,8 +18,7 @@ int main()
         cout << "Enter element p_darr[" << i << "]: ";
         cin >> p_darr[i];
         cout << endl;
-    }
-    
+    }    
     // find max element of array
     max_elem = p_darr[0];
     for (i = 1; i<num; i++) 
@@ -28,7 +27,7 @@ int main()
  {
             max_elem = p_darr[i];
         }
-    }
+    
     
     int num1;
     int *p_darr_new;
@@ -37,7 +36,7 @@ int main()
         int_part = p_darr[i] / max_elem;
         if (p_darr[i] == (max_elem*int_part))
  {
-            num1 = num - i + 1;
+            num1 = num - i ;
             p_darr_new = new int[num1];
             for (j = i; j<num; j++) 
 {
@@ -60,6 +59,7 @@ int main()
         }
         break;
     }
+    }
     
     // print array p_darr_new
     cout << "begin array: ";
@@ -70,7 +70,7 @@ int main()
     cout << endl;
     
     delete[] p_darr;
-    //delete[] p_darr_new;
+    delete[] p_darr_new;
     
     return 0;
 }
