@@ -1,0 +1,237 @@
+#include <io.h>
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <process.h>
+#define TRUE 1
+typedef struct
+{
+    long n
+	long m
+	long l
+	long **ptr1
+	long **ptr2
+} Matr;
+void InitFile (char* , char* , long );
+Matr* InitMatr ();
+void DisplayFile (char* , char* );
+void DisplayMatr (Matr* );
+void WorkFile( char* , char* , long* );
+long MultElemMatrix ( long* );
+
+int main(void)
+{
+char FileName[20];
+char FileName2[20];
+long kNumber;
+long m,n,l;
+while(TRUE)
+{
+printf("\nEnter kNumber number of structure:\n");
+scanf("%u",&kNumber);
+
+printf("\nEnter n, m, l dimentions of matrixs:\n");
+scanf("%u%u",&n,&m, &l);
+
+if  ((kNumber > 0) && (n > 0) && (m > 0) && (l>0))  break;
+printf("\nNumber is incorrect!!! Try again!!!\n");
+}
+printf("\nEnter the name of file: \n");
+scanf("%s",FileName);
+
+printf("\nEnter the name of file2: \n");
+scanf("%s",FileName2);
+
+clrscr();
+InitFile (FileName,"wb",kNumber,n,m,l);
+DisplayFile(FileName,"rb");
+}
+printf("\n Enter the number - the mode of operations with file:"
+"\n 1 - FORMATION OF THE FILE"
+"\n 2 - VIEWING OF CONTENTS OF THE FILE"
+"\n 3 - ADD AN ELEMENT TO AND OF FILE"
+"\n 4 - REMOVE THE ELEMENT IN THE FILE"
+"\n 5 - EXIT\n");
+fflush(stdin);
+scanf("%c",&Key);
+clrscr();
+switch (Key)
+{
+case '1':
+while(TRUE)
+{
+printf("\nEnter the number of Matrs:");
+scanf("%ld",&Number);
+if (Number > 0) break;
+printf("\n Number is incorrect! Try again!!!\n");
+}
+InitFile (FileName,"wb",Number);
+DisplayFile(FileName,"rb");
+getch();
+clrscr();
+break;
+case '2':
+DisplayFile(FileName,"rb");
+printf("\n\nPress any key to return in “
+“the menu...");
+getch();
+clrscr();
+break;
+case '3':
+while(TRUE)
+{
+printf("\nEnter the number of “
+“Matrs to addition:");
+scanf("%ld",&Number);
+if (Number > 0) break;
+printf("\n Number is incorrect!”
+“ Try again!!!\n");
+}
+AddToEndFile(FileName,"ab",Number);
+printf("\n\nPress any key to return in “
+“the menu...");
+getch();
+clrscr();
+break;
+case '4':
+printf("\nEnter number of element from “
+“removing :");
+scanf("%ld",&Number);
+RemoveElementFromFile(FileName, "r+b",
+Number);
+printf("\n\nPress any key to return in “
+“the menu...");
+getch();
+clrscr();
+break;
+case '5': return 0;
+default:
+printf("\nIncorrect input!”
+“ Try again!!!");
+printf("\n\nPress any key to return in”
+“ the menu...");
+getch();
+clrscr();
+break;
+}
+}
+
+void InitFile(char* String, char* Mode, long n, long n1,long m1,long l1)
+{
+long i;
+int BufSize = sizeof(Matr);
+Matr* Matr1;
+FILE* FileStruct = fopen(String, Mode);
+if (FileStruct == NULL)
+{
+printf("Can't open file to write.");
+getch();
+abort();
+}
+for( i = 1; i <= n; i++)
+{
+printf("\nEnter information for the Matr number %ld \n", i);
+Matr1 = InitMatr(n1,m1,l1);
+fwrite(Matr1, BufSize, 1, FileStruct);
+}
+free(Matr1);
+fclose(FileStruct);
+}
+
+
+long MultElemMatrix ( long* Matr1)
+{
+int s = 0;
+unsigned i;
+for ( i = 0; i < Matr1->n * Matr1->m; i++ )
+{
+}return s;
+}
+void WorkFile(char* String, char* Mode, long* Matr1)
+{
+int* Pointer = FreeMemory(Matr1);
+int BufSize = sizeof(Matr1);
+int* Simple, Sum = 0;
+FILE* FilePointer= fopen(String, Mode);
+if ( FilePointer== NULL)
+{
+printf("Can't open file to read.");
+getch();
+abort();
+}
+while(fread(Pointer, BufSize,1,FilePointer) != 0)
+{
+Sum = SumElemMatrix(Pointer, n, m);
+if ( Sum % 2 == 0 )
+{
+fseek(FilePointer, -1L * BufSize, SEEK_CUR);
+Simple = SimpleMatrix(n, m);
+fwrite(Simple, BufSize,1, FilePointer);
+fseek(FilePointer, 0L, SEEK_CUR);
+}
+}
+fclose(FilePointer);
+free(Pointer);
+free(Simple);
+}
+}
+
+Matr* InitMatr(long n2,long m2, long l2)
+{
+unsigned i, j;
+Matr* Matr1 = (Matr*)malloc(sizeof(Matr));
+Matr1 ->n = n2;
+Matr1 ->m = m2;
+Matr1 ->l = l2;
+printf("\nEnter elements matr[n,m]:");
+for( i = 0; i < n2 * m2; i++)
+{
+printf("\nEnter elemnts:");
+scanf("%s", Matr1 ->ptr1[i]);
+}
+printf("\nEnter elements matr[m,l]:");
+for( j = 0; i < m2 * l2; j++)
+{
+printf("\nEnter elemnts:");
+scanf("%s", Matr1 ->ptr2[j]);
+}
+printf("\n");
+return Matr1;
+}
+
+
+void DisplayFile(char* String, char* Mode, )
+{
+int BufSize = sizeof(Matr);
+Matr* Matr1 = (Matr*)malloc(BufSize);
+FILE* FileStruct = fopen(String, Mode);
+if ( FileStruct == NULL)
+{
+printf("Can't open file to read.");
+getch();
+abort();
+}
+while(fread(Matr1,BufSize,1, FileStruct) != 0)
+{
+DisplayMatr(Matr1);
+}
+free(Matr1);
+fclose(FileStruct);
+}
+void DisplayMatr (Matr* Matr1)
+{
+unsigned i, j;	
+printf("\n", Matr1->n,Matr1->m,Matr1->l);
+printf("\n matr[n,m]");
+for( i = 0; i < Matr1->n* Matr1->m; i++)
+{
+printf("\n", Matr1 ->ptr1[i]);
+}
+printf("\n")
+printf("\n matr[n,m]");
+for( j = 0; j < Matr1->m* Matr1->l; j++)
+{
+printf("\n", Matr1 ->ptr2[j]);
+}
+printf("\n");
+}
